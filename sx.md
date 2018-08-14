@@ -1,48 +1,239 @@
-# *原生JS 从DOM事件流到事件处理浏览器解决适配模板（DOM探秘吧！）*
+# 前端路由一探
 
-# 前言：
-  世界上的浏览器分两种，一种叫IE（嗯，从win10开始没有了，但是有时候还是需要做IE的兼容）一种叫其它。在个人学习中我们无论写静态还是写点简单的交互操作，往往是只要在Chrome上正常即可，不会注意兼容性问题，感觉很失败。而就现在阶段而言个人理解的兼容问题就在于不同浏览器的操作API上。
-注：博文仅供参看，且看且不信。也欢迎提错。
+## 后端路由
+我眼中理解的后端路由就是浏览器URL变化，请求资源变化，然后后端做相应的资源返回
 
-# DOM事件：
-   交互网页，JS通过事件监听（捕获事件），事件处理，事件冒泡完成。简单点你可以理解DOM操作就是一套JS操作HTML元素的API。
+## 前端路由
 
-  1. 事件冒泡：具体一个发出事件的元素往上（父级元素）传，至document文档对象。
+1. hashchange事件
+  H5新增hashchange事件用来监听url参数的变化。
+  注：hashchange的事件处理程序绑在window下处理。存在浏览器兼容性问题
+  能力检测：
+    ```
+      var isSupport=('hashchange' in window)&&(document.documentMode===undefined||document.documentMode)
+    ```
 
-  2. 事件默认行为：例如点击a标签默认页面发生跳转。
+2. 前端路由实现方式
+  * 页面不刷新条件下改变URL:
+    1. 利用URL的hash值
+      URL的每次变化都会导致页面刷新，而利用hash的方式可以让页面不刷新，即不发出请求。
+    2. H5的history
+      利用history相关API：pushState和replaceState方法，它们改变URL地址，但是请求不发送  
+  * 捕捉url变化，执行页面替换
 
-
-# 事件处理程序：
-  1. HTML内嵌：
-
-      缺点：太丑，变动麻烦。好吧，感觉主要是丑。
-  2. DOM0级：
-
-
-  3. DOM2级：
-
-  4. IE：
-
-  5. 区别：
-    * 作用域不同，
-    * DOM0级较DOM2级可以对同一元素的任意事件绑定处理程序，DOM0级也可以绑定，但是只执行最后一个处理程序，而DOM2级都处理。
+3. 前端路由
+    通过hashchange事件我们可以知道URL的参数什么时候发生了变化，什么时候该有所反应。通过状态管理相关API，在不刷新页面下改变浏览器的URL。
+  主要是history.pushState()方法。
 
 
+## vue-router
+1. 在vue中使用vue-router
+  * 引入vue-router库
+    ```
+    import VueRouter from 'vue-router';
+    ```
+  * vue中通过use方法加载vue-router
+    ```
+      Vue.use(VueRouter);
+    ```
+  * vue-router实例化
+  ```
+  const router = new VueRouter({
+    'linkActiveClass': 'active',
+    routes // routes是写好的路由配置文件
+  });
+  ```
+  * Vue实例挂载vue-router
+  ```
+  new Vue({
+      router
+    }).$mount('#app')
+  ```
+  注：上述过程可能与脚手架直接搭出来的项目结构有点区别。请灵活观看，这里不多写。
 
-# 性能优化：
-      事件处理程序确实为我们网站带来了交互，但是大量的事件处理容易导致网站的加载过慢，例如：[智能社](http://www.zhinengshe.com/)（注：网站效果做得很棒）。
-      > 红包书中解释到：函数是对象，而内存中的对象数量过多就导致性能变差。事先准备事件处理程序DOM访问次数变多，延迟了页面的交互就绪时间。  
 
-    ## 提升性能方案：
-      1. 事件委托：
-        例：有个列表，列表的每项都需要添加click事件。事件委托的想法就是给列表项的父级元素添加，通过事件对象获取列表项元素配合事件冒泡思想完成。
+2.  vue中通过use方法加载vue-router
+  实际是加载VueRouter中的 install 方法。install 完成 Vue 实例对 VueRouter 的挂载过程.(源码见：(vue-router/src/install.js)[https://github.com/vuejs/vue-router/blob/dev/src/install.js])
+  ```
+    //源码：
 
-      2. 移除事件处理程序：
-        用完记得冲厕所。很多时候我们只是添加了事件处理程序，但是用完后没有移除。（嗯，至少我是这样）。
-# 总结：
-  就原生语言开发来看，不能提供给我们很多便利，往往我们一上来更愿意上手个框架，例如：提到DOM操作的简洁性我会想到jQuery。有因必有果，所以我更情愿通透原生的条件下学习框架。
-最后打个广告：[广告](https://github.com/lvfangren)
+    export function install (Vue) {
+    ...  
 
-# 参考：
-  书籍：见红宝书13章
-  视频：[慕课网](https://www.imooc.com/learn/138)
+    //混入 (mixins)两个钩子函数
+    //当组件使用混入对象时，所有混入对象的选项将被混入该组件本身的选项。(混入概念)[https://cn.vuejs.org/v2/guide/mixins.html]
+    Vue.mixin({
+    beforeCreate () {
+      if (isDef(this.$options.router)) {
+        this._routerRoot = this
+        this._router = this.$options.router
+
+        //调用实例的init方法
+        this._router.init(this)
+
+        Vue.util.defineReactive(this, '_route', this._router.history.current)
+      } else {
+        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this
+      }
+      registerInstance(this, this)
+    },
+    destroyed () {
+      registerInstance(this)
+    }
+  })
+  //做数据劫持，修改$router，$route属性的getter
+  Object.defineProperty(Vue.prototype, '$router', {
+    get () { return this._routerRoot._router }
+  })
+
+  Object.defineProperty(Vue.prototype, '$route', {
+    get () { return this._routerRoot._route }
+  })
+//全局注册RouterView，RouterLink组件
+  Vue.component('RouterView', View)
+  Vue.component('RouterLink', Link)
+
+
+  ...
+}
+  ```
+
+3. 实例化vue-router(源码见： (vue-router/src/index.js)[https://github.com/vuejs/vue-router/blob/dev/src/index.js])
+```
+//在Vue项目中写路由配置
+import Router from 'vue-router'
+new Router({
+  mode:'history',//不传这个参数，默认值为hash
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: HelloWorld
+    }
+  ]
+})
+```
+```
+//源码：
+export default class VueRouter {
+  ...
+  constructor (options: RouterOptions = {}) {
+    this.app = null
+    this.apps = []
+    this.options = options
+    this.beforeHooks = []
+    this.resolveHooks = []
+    this.afterHooks = []
+    this.matcher = createMatcher(options.routes || [], this)
+
+    let mode = options.mode || 'hash' //默认路由方法hash
+    this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false
+  if (this.fallback) {
+    mode = 'hash'
+  }
+  if (!inBrowser) {
+    mode = 'abstract'
+  }
+  this.mode = mode
+
+//判断浏览器对路由方式的兼容性从而实现选择
+  switch (mode) {
+    case 'history':
+      this.history = new HTML5History(this, options.base)
+      break
+    case 'hash':
+      this.history = new HashHistory(this, options.base, this.fallback)
+      break
+    case 'abstract':
+      this.history = new AbstractHistory(this, options.base)
+      break
+    default:
+      if (process.env.NODE_ENV !== 'production') {
+        assert(false, `invalid mode: ${mode}`)
+      }
+  }
+
+  //init方法
+  init (app: any /* Vue component instance */) {
+    process.env.NODE_ENV !== 'production' && assert(
+      install.installed,
+      `not installed. Make sure to call \`Vue.use(VueRouter)\` ` +
+      `before creating root instance.`
+    )
+
+//在inistall方法执行时调用init方法传入Vue实例的this
+    this.apps.push(app)
+
+    // main app already initialized.
+    if (this.app) {
+      return
+    }
+
+    this.app = app
+
+    const history = this.history
+
+    if (history instanceof HTML5History) {
+      //history.transitionTo路由方法的切换
+      history.transitionTo(history.getCurrentLocation())
+    } else if (history instanceof HashHistory) {
+      const setupHashListener = () => {
+        history.setupListeners()
+      }
+      history.transitionTo(
+        history.getCurrentLocation(),
+        setupHashListener,
+        setupHashListener
+      )
+    }
+    //监听路由变化
+    history.listen(route => {
+     this.apps.forEach((app) => {
+       app._route = route
+     })
+   })
+ }
+
+
+```
+注：这部分的源码有TypeScript的写法，感觉就是在JS的基础上加了个类型指定，还有就是让一些概念在语法上显得更严谨。可以参考下
+
+3. Vue实例挂载vue-router
+此时router实例对象会被挂到Vue的this.$options选项上
+```
+new Vue({
+  router
+  })
+
+```
+
+4. vue-router中 H5的history 实现（源码见：(vue-router/src/history/html5.js)[https://github.com/vuejs/vue-router/blob/dev/src/history/html5.js]）
+
+```
+//源码：
+//HTML5History对象继承History对象
+export class HTML5History extends History {
+constructor (router: Router, base: ?string) {
+  super(router, base)
+
+}
+//下面的方法具体略
+//前进到第几页
+go(){}
+//  
+push(){}  
+replace(){}
+ensureURL(){}
+getCurrentLocation (){}
+}
+export function getLocation (base: string): string {
+  let path = window.location.pathname
+  if (base && path.indexOf(base) === 0) {
+    path = path.slice(base.length)
+  }
+  return (path || '/') + window.location.search + window.location.hash
+}        
+```
+
+
+5.
