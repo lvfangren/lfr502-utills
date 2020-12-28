@@ -17,6 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # run ci demo script output
+      - name: run scripts
+        run: |
+          npm run dev
+
       # Runs the Super-Linter action
       - name: Run Super-Linter
         uses: github/super-linter@v3
