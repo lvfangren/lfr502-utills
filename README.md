@@ -6,5 +6,7 @@
 
 
 ![GitHub issues](https://img.shields.io/github/issues/lvfangren/lfr502-utills?style=plastic)
+
 ![MIT](https://img.shields.io/github/license/lvfangren/lfr502-utills)
 
+![Super-Linter](https://github.com/lvfangren/lfr502-utills/workflows/Super-Linter/badge.svg?branch=master)
