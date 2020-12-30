@@ -23,8 +23,8 @@ jobs:
           npm run dev
 
       # Runs the Super-Linter action
-      - name: Run Super-Linter
-        uses: github/super-linter@v3
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.CICD }}
+      # - name: Run Super-Linter
+      #   uses: github/super-linter@v3
+      #   env:
+      #     DEFAULT_BRANCH: main
+      #     GITHUB_TOKEN: ${{ secrets.CICD }}
