@@ -1,11 +1,12 @@
-// 模块化设计拆分三个对象
-// response对象，处理http请求回应
-
-
-// 基于promise，不使用回调的方式更加简洁
-
-//  new AbortSignal() 对象可以取消fetch请求
-
+/**
+ * 基于fetch API的请求方法封装
+ *
+ * @param {string} [fetchUrl='']
+ * @param {*} [resParms={}]
+ * @param {string} [dataType="json"]
+ * @param {boolean} [isStopFetch=false]
+ * @returns
+ */
 async function fetchData(fetchUrl = '', resParms = {}, dataType = "json", isStopFetch = false) {
     // 请求头配置设置
     let returnData = Object.create(null),
