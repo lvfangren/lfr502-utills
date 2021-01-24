@@ -23,3 +23,5 @@ const unique = (...res)  => {
 }
 
 // 嗯，还可以正则去重
+
+module.exports = unique
