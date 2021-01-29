@@ -8,15 +8,11 @@
 // }
 
 function format(string) {
-	var args = arguments;
-  // console.log(string,args)
-  // 不能用面向字面量的方式写正则了。
-  var pattern = new RegExp("%([1-" + arguments.length + "])", "g");
-  return String(string).replace(pattern, function(match, index) {
-		return args[index];
-	});
-};
-
-
+	const args = arguments;
+	// console.log(string,args)
+	// 不能用面向字面量的方式写正则了。
+	const pattern = new RegExp(`%([1-${arguments.length}])`, "g");
+	return String(string).replace(pattern, (match, index) => args[index]);
+}
 
 console.log(format("And the %1 want to know whose %2 you %4", "papers", "shirt", "wear"));

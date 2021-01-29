@@ -1,10 +1,10 @@
-//示例:  https://mp.weixin.qq.com/s/4ZsIfkS5BKACu8exEPpTmQ
+// 示例:  https://mp.weixin.qq.com/s/4ZsIfkS5BKACu8exEPpTmQ
 
 /*
   将后端返回的一维扁平数据转换成我们前端所需的树形结构
-  
+
   test data:
-  
+
       var input = {
   h3: {
     parent: 'h2',
@@ -45,16 +45,16 @@
 };
 */
 
-
-const changeTree = (obj)=>{
-  let treeData, key;
-  for(key in obj){
-    let parent = obj[key].parent
-    if(parent === ''){
-      treeData = obj[key]
-    }else{
-      obj[parent][key] = obj[key]    
-    }
-  }
-  return treeData
+const changeTree = (obj) => {
+	let treeData,
+		  key;
+	for (key in obj) {
+		const { parent } = obj[key];
+		if (parent === "") {
+			treeData = obj[key];
+		} else {
+			obj[parent][key] = obj[key];
+		}
+	}
+	return treeData;
 }

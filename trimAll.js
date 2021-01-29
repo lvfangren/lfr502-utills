@@ -3,11 +3,9 @@
 // 传参：字符串
 // 结果返回：去掉字符串中的所有空格后的字符串
 
-
 // 刚刚开始的思路是split方法切割空格，然后join。但是对于tab（制表符）就无法处理，马上正则
 
-const trimAll=(str)=>{
-// \s	=== [ \t\n\x0B\f\r]	=== 空白字符
-  return str.replace(/\s+/g,'');
-
-}
+const trimAll = (str) => str.replace(/\s+/g, "");
+exports.module = {
+	trimAll
+};

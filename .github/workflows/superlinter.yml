@@ -1,7 +1,7 @@
 name: Super-Linter
 
 # Run this workflow every time a new commit pushed to your repository
-on: push
+on: [push, pull_request]
 
 jobs:
   # Set the job key. The key is displayed as the job name
@@ -20,6 +20,7 @@ jobs:
       # run ci demo script output
       - name: run scripts
         run: |
+          npm ci
           npm run dev
 
       # Runs the Super-Linter action
