@@ -237,3 +237,19 @@ export function getLocation (base: string): string {
 
 
 5.
+
+
+
+
+
+
+
+
+
+
+* 拖动
+
+html5 提供一个原生的拖拽。问题是拖动的东西会产生阴影，效果不好
+
+处理采用
+
