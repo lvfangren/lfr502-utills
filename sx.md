@@ -237,3 +237,6 @@ export function getLocation (base: string): string {
 
 
 5.
+
+
+; 测试下git rebase命令
