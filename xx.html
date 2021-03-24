@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- <script type="text/babel">
+        // 创建一个App组件
+        class App extends React.Component {
+            // let testData = 'n123ames'
+            render() {
+                let testData = 'n123ame2222s'
+                const getJSXDom = <div className="testDdemo">
+                                    <h1>{testData}</h1>
+                                  </div>
+
+                return (
+                    getJSXDom
+                )
+            }
+        }
+        // 组件挂载
+        ReactDOM.render(<App />, document.querySelector('#app'))
+    </script> -->
+
+    <script type="text/babel" >
+        const FromBody = () => {
+            return (
+                <div className="xxx">
+                    <h1>ma name is body</h1>
+                </div>
+            )
+        }
+        const FromHead = (props) => {
+            const datas =  props.giveUData.name
+            return (
+                <div className="yyy">
+                    <h1>ma name is header {datas}</h1>
+                </div>
+            )
+        }
+
+        class From extends React.Component {
+            render() {
+                const xxx = {
+                    name: 'LFR',
+                    age: 21
+                }
+
+                return (
+                    <div>
+                       <FromHead giveUData="xxx"/>
+                       <FromBody />
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<From />, document.querySelector('#app'))
+
+    </script>
+</body>
+</html>
+
+
+<!-- 
+    1. react 
+
+    2. create-reacr-app
+
+    3. JSX
+
+    4. 组件的划分: 类组件，简单组件
+
+    5. 
+
+ -->

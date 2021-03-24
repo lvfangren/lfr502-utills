@@ -254,3 +254,16 @@ html5 提供一个原生的拖拽。问题是拖动的东西会产生阴影，�
 处理采用
 
 ; 测试下git rebase命令
+
+
+* Reset、Revert 跟 Rebase区别
+
+控制commit 树；rebase 不管是新增、修改、刪除 Commit 都相當方便；另外两个是取消的，但是revert会在commit 中留记录，reset不会
+
+* npx(从npm 5.2版本开始)
+调用项目安装的模块
+避免全局安装模块
+使用不同版本的 node
+
+* vue运行时版本和完整版
+
